@@ -1,0 +1,8 @@
+debug: true
+kafka:
+  user: team41
+  password: mNgdxQTbhVGd
+  brokers:
+    - 91.185.95.87:9094
+  topic: team41-emails
+  group_id: team41-mailsender-group-id
