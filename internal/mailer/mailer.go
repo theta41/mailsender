@@ -28,9 +28,9 @@ func New(workers int) *Mailer {
 
 func (m *Mailer) start() {
 	logrus.Infof("start mailer workers")
-	for i := 1; i < m.workers; i++ {
+	for i := 0; i < m.workers; i++ {
 		m.wg.Add(1)
-		go m.worker()
+		go m.worker(i + 1)
 	}
 }
 
@@ -42,8 +42,12 @@ func (m *Mailer) Stop() {
 	logrus.Info("all mailer workers are stopped")
 }
 
-func (m *Mailer) worker() {
+func (m *Mailer) worker(workerId int) {
 	defer m.wg.Done()
+
+	logrus.Infof("start mailer worker#%v", workerId)
+	defer logrus.Infof("stopped mailer worker#%v", workerId)
+
 	for {
 		select {
 		case msg := <-m.msgPool:
