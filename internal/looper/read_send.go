@@ -48,8 +48,8 @@ func (s *readerSender) readAndSend(ctx context.Context, log *logrus.Entry) statu
 	}
 
 	log.WithFields(logrus.Fields{
-		"email":   email.Address,
-		"content": email.Content,
+		"email": email.Address,
+		//"content": email.Content,
 	}).Info("successfully sent message")
 
 	return statusSent

@@ -74,7 +74,7 @@ func (c *Client) ReadMessage(ctx context.Context) (model.Message, error) {
 				continue
 			}
 
-			log.Info("got message: ", msg)
+			//log.Info("got message: ", msg)
 
 			return model.Message(msg), nil
 		}
