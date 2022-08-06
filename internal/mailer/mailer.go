@@ -27,6 +27,7 @@ func New(workers int) *Mailer {
 }
 
 func (m *Mailer) start() {
+	logrus.Infof("start mailer workers")
 	for i := 1; i < m.workers; i++ {
 		m.wg.Add(1)
 		go m.worker()
@@ -34,9 +35,11 @@ func (m *Mailer) start() {
 }
 
 func (m *Mailer) Stop() {
+	logrus.Info("stopping mailer workers")
 	close(m.stop)
 	m.wg.Wait()
 	close(m.msgPool)
+	logrus.Info("all mailer workers are stopped")
 }
 
 func (m *Mailer) worker() {

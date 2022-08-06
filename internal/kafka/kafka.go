@@ -46,6 +46,11 @@ func NewClient(brokers []string, topic, groupId string) (*Client, error) {
 	return &c, nil
 }
 
+func (c *Client) Close() {
+	logrus.Info("close kafka reader")
+	c.reader.Close()
+}
+
 func (c *Client) ReadMessage(ctx context.Context) (model.Message, error) {
 	log := logrus.WithField("mq", "kafka-ReadMessage")
 	for {
