@@ -1,4 +1,4 @@
-package mailsender
+package mailer
 
 import (
 	"context"
@@ -9,37 +9,37 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type MailSender struct {
+type Mailer struct {
 	workers int
 	msgPool chan model.Email
 	stop    chan struct{}
 	wg      sync.WaitGroup
 }
 
-func New(workers int) *MailSender {
-	m := &MailSender{
+func New(workers int) *Mailer {
+	m := &Mailer{
 		workers: workers,
 		msgPool: make(chan model.Email, workers),
 		stop:    make(chan struct{}),
 	}
-	m.run()
+	m.start()
 	return m
 }
 
-func (m *MailSender) run() {
+func (m *Mailer) start() {
 	for i := 1; i < m.workers; i++ {
 		m.wg.Add(1)
 		go m.worker()
 	}
 }
 
-func (m *MailSender) Stop() {
+func (m *Mailer) Stop() {
 	close(m.stop)
 	m.wg.Wait()
 	close(m.msgPool)
 }
 
-func (m *MailSender) worker() {
+func (m *Mailer) worker() {
 	defer m.wg.Done()
 	for {
 		select {
@@ -56,7 +56,7 @@ func printEmail(msg model.Email) {
 	logrus.Infof("printMessage %+v", msg)
 }
 
-func (m *MailSender) SendEmail(ctx context.Context, msg model.Email) error {
+func (m *Mailer) SendEmail(ctx context.Context, msg model.Email) error {
 	select {
 	case m.msgPool <- msg:
 		return nil
