@@ -5,11 +5,9 @@ type Config struct {
 	PeriodMinutes   int  `yaml:"period_minutes"`
 	RequstsInPeriod int  `yaml:"requests"`
 	Kafka           struct {
-		User     string   `yaml:"user"`
-		Password string   `yaml:"password"`
-		Brokers  []string `yaml:"brokers"`
-		Topic    string   `yaml:"topic"`
-		GroupId  string   `yaml:"group_id"`
+		Brokers []string `yaml:"brokers"`
+		Topic   string   `yaml:"topic"`
+		GroupId string   `yaml:"group_id"`
 	} `yaml:"kafka"`
 }
 
