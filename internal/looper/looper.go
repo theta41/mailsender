@@ -46,6 +46,8 @@ func (o *looper) Loop(ctx context.Context) {
 
 func (o *looperLimited) Loop(ctx context.Context) {
 	ticker := time.NewTicker(o.period)
+	defer ticker.Stop()
+
 	log := logrus.WithField("stage", "looperLimited")
 
 	for {

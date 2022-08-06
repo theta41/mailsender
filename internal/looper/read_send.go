@@ -3,6 +3,7 @@ package looper
 import (
 	"context"
 	"errors"
+	"io"
 
 	"github.com/sirupsen/logrus"
 )
@@ -27,6 +28,10 @@ func (s *readerSender) readAndSend(ctx context.Context, log *logrus.Entry) statu
 		if errors.Is(err, context.Canceled) {
 			return statusCanceled
 		}
+		if errors.Is(err, io.EOF) {
+			log.Info("reader close detected")
+			return statusCanceled
+		}
 		log.WithError(err).Error("cannot read message")
 		return statusRetry
 	}
@@ -35,9 +40,10 @@ func (s *readerSender) readAndSend(ctx context.Context, log *logrus.Entry) statu
 	err = s.sender.SendEmail(ctx, email)
 	if err != nil {
 		if errors.Is(err, context.Canceled) {
+			log.Errorf("sending canceled, email lost %+v", email)
 			return statusCanceled
 		}
-		log.WithError(err).Error("cannot send message")
+		log.WithError(err).Errorf("cannot send, email lost %+v", email)
 		return statusRetry
 	}
 

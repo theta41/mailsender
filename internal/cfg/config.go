@@ -1,8 +1,10 @@
 package cfg
 
 type Config struct {
-	Debug bool `yaml:"debug"`
-	Kafka struct {
+	Debug           bool `yaml:"debug"`
+	PeriodMinutes   int  `yaml:"period_minutes"`
+	RequstsInPeriod int  `yaml:"requests"`
+	Kafka           struct {
 		User     string   `yaml:"user"`
 		Password string   `yaml:"password"`
 		Brokers  []string `yaml:"brokers"`

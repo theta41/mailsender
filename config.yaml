@@ -1,4 +1,6 @@
 debug: true
+period_minutes: 1
+requests: 1
 kafka:
   user: team41
   password: mNgdxQTbhVGd
