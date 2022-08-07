@@ -1,0 +1,8 @@
+debug: true
+period_minutes: 1
+requests: 1
+kafka:
+  brokers:
+    - 91.185.95.87:9094
+  topic: team41-emails
+  group_id: team41-mailsender-group-id
